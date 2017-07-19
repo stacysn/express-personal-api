@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
  * DATABASE *
  ************/
 
-// var db = require('./models');
+var db = require('./models');
 
 /**********
  * ROUTES *
@@ -33,9 +33,49 @@ app.use(express.static('public'));
  * HTML Endpoints
  */
 
+
 app.get('/', function homepage(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
+
+//get all places
+app.get('/api/places', function (req, res){
+  db.Place.find({})
+  .exec(function(err, places){
+    if (err) {
+      return console.log("index error: " + err);
+      }
+      res.json(places);
+  });
+});
+
+//get one book
+app.get('/api/places/:id', function (req, res){
+  db.Place.findOne({_id: req.params.id}, function(err, data){
+    res.json(data);
+  });
+});
+
+//create new Place
+app.post('/api/places', function (req, res){
+  var newPlace = new db.Place ({
+    description: req.body.description,
+    town: req.body.town,
+    country: req.body.country,
+    years: req.body.years,
+    gps: req.body.gps,
+    photo: req.body.photo
+  });
+})
+
+// db.Places.findOne()
+
+
+
+//create new place
+// app.post('/api/places', function (req, res){
+//
+// })
 
 
 /*
@@ -43,20 +83,78 @@ app.get('/', function homepage(req, res) {
  */
 
 app.get('/api', function apiIndex(req, res) {
-  // TODO: Document all your api endpoints below as a simple hardcoded JSON object.
-  // It would be seriously overkill to save any of this to your database.
-  // But you should change almost every line of this response.
   res.json({
     woopsIForgotToDocumentAllMyEndpoints: true, // CHANGE ME ;)
     message: "Welcome to my personal api! Here's what you need to know!",
-    documentationUrl: "https://github.com/example-username/express-personal-api/README.md", // CHANGE ME
-    baseUrl: "http://YOUR-APP-NAME.herokuapp.com", // CHANGE ME
+    documentationUrl: "https://github.com/stacysn/express-personal-api/blob/master/README.md",
+    baseUrl: "https://aqueous-castle-36349.herokuapp.com/",
     endpoints: [
-      {method: "GET", path: "/api", description: "Describes all available endpoints"},
-      {method: "GET", path: "/api/profile", description: "Data about me"}, // CHANGE ME
-      {method: "POST", path: "/api/campsites", description: "E.g. Create a new campsite"} // CHANGE ME
+      {
+        method: "GET",
+        path: "/api",
+        description: "Describes all available endpoints"
+      },
+      {
+        method: "GET",
+        path: "/api/profile",
+        description: "Data about me"
+      },
+      {
+        method: "GET",
+        path: "/api/places",
+        description: "Index of all the places"
+      },
+      {
+        method: "POST",
+        path: "/api/places",
+        description: "Create new places"
+      },
+      {
+        method: "PUT",
+        path: "/api/places/:id",
+        description: "Edit a previous place entry and update it"
+      },
+      {
+        method: "DELETE",
+        path: "/api/places/:id",
+        description: "Destroy a place"
+      },
     ]
   })
+});
+
+app.get('/api/profile', function myProfile(req, res){
+  res.json({
+    name : "Stacy",
+    githubUswername : "stacysn",
+    githubLink: "https://github.com/stacysn",
+    githubProfileImage:"https://avatars1.githubusercontent.com/u/26883903?v=4&amp;u=8191f1a962e3e7b7f7f14916f75e14aa24a6a876&amp;s=400",
+    personalSiteLink: "https://github.com/stacysn/stacysn.github.io",
+    currentCity: "San Francisco",
+    pets: [
+      {
+        name: "Angel",
+        type: "dog",
+        breed: "mixed chihuahua"
+      },
+      {
+        name: "Mimi",
+        type: "dog",
+        breed: "poodle"
+      },
+      {
+        name: "Fluffy",
+        type: "chicken",
+        breed: "white"
+      },
+      {
+        name: "Autumn",
+        type: "turtle",
+        breed: "red ear slider"
+      }
+
+    ]
+  });
 });
 
 /**********
