@@ -48,12 +48,14 @@ app.get('/api/places', function (req, res){
       res.json(places);
   });
 });
-//get one book
-// app.get('/api/places/:id', function (req, res){
-//   db.Place.findOne({_id: req.params.id}, function(err, data){
-//     res.json(data);
-//   });
-// });
+
+//get one place
+app.get('/api/places/:id', function (req, res){
+  var placeId = req.params.id
+  db.Place.findById(placeId, function(err, foundPlace){
+    res.json(foundPlace);
+  });
+});
 
 //create new Place -- WORKS
 app.post('/api/places', function (req, res){
@@ -67,7 +69,6 @@ app.post('/api/places', function (req, res){
 app.delete('/api/books/:id', function(req, res){
   var placeId = req.params.id;
   db.Place.findOneandRemove({ _id : placeId})
-    .populate('gps')
     .exec(function (err, deletedPlace){
       res.json(deletedPlace);
     })
@@ -137,28 +138,37 @@ app.get('/api/profile', function myProfile(req, res){
     githubProfileImage:"https://avatars1.githubusercontent.com/u/26883903?v=4&amp;u=8191f1a962e3e7b7f7f14916f75e14aa24a6a876&amp;s=400",
     personalSiteLink: "https://github.com/stacysn/stacysn.github.io",
     currentCity: "San Francisco",
-    pets: [
+    favoriteHobbies: [
       {
-        name: "Angel",
-        type: "dog",
-        breed: "mixed chihuahua"
+        activity: "tennis",
+        type: "sport",
+        years: 13,
       },
       {
-        name: "Mimi",
-        type: "dog",
-        breed: "poodle"
+        activity: "swimming",
+        type: "sport",
+        years: 18
       },
       {
-        name: "Fluffy",
-        type: "chicken",
-        breed: "white"
+        activity: "surfing",
+        type: "sport",
+        years: 1
       },
       {
-        name: "Autumn",
-        type: "turtle",
-        breed: "red ear slider"
+        activity: "piano",
+        type: "music",
+        years: 13
+      },
+      {
+        activity: "cello",
+        type: "music",
+        years: 2.5
+      },
+      {
+        activity: "flute",
+        type: "music",
+        years: 5
       }
-
     ]
   });
 });
