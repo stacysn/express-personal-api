@@ -1,7 +1,9 @@
 body {
   color: #333;
   font-family: Helvetica, Arial, sans-serif;
-  background-color: skyblue; /* Sanity Check! */
+  background-image: url("/images/cancun.jpg");
+  background-repeat: no-repeat;
+  background-position: 40% 40%;
 }
 
 h1 {
