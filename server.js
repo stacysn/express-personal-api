@@ -50,22 +50,18 @@ app.get('/api/places', function (req, res){
 });
 
 //get one book
-app.get('/api/places/:id', function (req, res){
-  db.Place.findOne({_id: req.params.id}, function(err, data){
-    res.json(data);
-  });
-});
+// app.get('/api/places/:id', function (req, res){
+//   db.Place.findOne({_id: req.params.id}, function(err, data){
+//     res.json(data);
+//   });
+// });
 
 //create new Place
 app.post('/api/places', function (req, res){
-  var newPlace = new db.Place ({
-    description: req.body.description,
-    town: req.body.town,
-    country: req.body.country,
-    years: req.body.years,
-    gps: req.body.gps,
-    photo: req.body.photo
-  });
+  var newPlace = new db.Place (req.body);
+    newPlace.save(function (err, savedPlace){
+      res.json(savedPlace);
+    })
 })
 
 // db.Places.findOne()
