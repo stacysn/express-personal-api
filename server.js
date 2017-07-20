@@ -49,7 +49,7 @@ app.get('/api/places', function (req, res){
   });
 });
 
-//get one place
+//get one place -- WORKS
 app.get('/api/places/:id', function (req, res){
   var placeId = req.params.id
   db.Place.findById(placeId, function(err, foundPlace){
@@ -66,23 +66,12 @@ app.post('/api/places', function (req, res){
 })
 
 //delete place
-app.delete('/api/books/:id', function(req, res){
+app.delete('/api/places/:id', function(req, res){
   var placeId = req.params.id;
-  db.Place.findOneandRemove({ _id : placeId})
-    .exec(function (err, deletedPlace){
-      res.json(deletedPlace);
-    })
-})
-
-
-// db.Places.findOne()
-
-
-
-//create new place
-// app.post('/api/places', function (req, res){
-//
-// })
+  db.Place.findOneAndRemove(placeId, function (err, deletePlace){
+    res.json(deletePlace);
+  });
+});
 
 
 /*
