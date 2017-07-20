@@ -48,7 +48,6 @@ app.get('/api/places', function (req, res){
       res.json(places);
   });
 });
-
 //get one book
 // app.get('/api/places/:id', function (req, res){
 //   db.Place.findOne({_id: req.params.id}, function(err, data){
@@ -56,13 +55,24 @@ app.get('/api/places', function (req, res){
 //   });
 // });
 
-//create new Place
+//create new Place -- WORKS
 app.post('/api/places', function (req, res){
   var newPlace = new db.Place (req.body);
     newPlace.save(function (err, savedPlace){
       res.json(savedPlace);
     })
 })
+
+//delete place
+app.delete('/api/books/:id', function(req, res){
+  var placeId = req.params.id;
+  db.Place.findOneandRemove({ _id : placeId})
+    .populate('gps')
+    .exec(function (err, deletedPlace){
+      res.json(deletedPlace);
+    })
+})
+
 
 // db.Places.findOne()
 

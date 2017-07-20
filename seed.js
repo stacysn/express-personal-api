@@ -3,7 +3,7 @@
 //
 var db = require('./models');
 
-var new_place = [
+var placeData = [
   {
     description: "Born and grew up here",
     town: "Yuba City",
@@ -53,12 +53,12 @@ var new_place = [
   }
 ];
 
-db.Place.create(new_place, function(err, place){
-  if (err){
-    return console.log("Error:", err);
-  }
 
-
-  console.log("Created new place", new_place)
-  process.exit(); // we're all done! Exit the program.
-})
+  db.Place.remove({}, function(err, place) {
+      db.Place.create(placeData, function(err, places) {
+          if (err) { return console.log('ERROR', err); }
+          console.log("all places: ", places);
+          console.log("created ", placeData.length, " places");
+          process.exit();
+      }); //closes create function
+  }); //closes remove function
